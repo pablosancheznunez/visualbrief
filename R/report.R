@@ -20,12 +20,29 @@ data_uri <- function(path) {
   paste0("data:", type, ";base64,", base64(readBin(path, "raw", file.size(path))))
 }
 
+open_png <- function(file, width, height, res = 150) {
+  # Try the platform's default bitmap device first (quartz on macOS), then the
+  # alternatives: capabilities() can report cairo even when it cannot load.
+  types <- unique(c(getOption("bitmapType"), if (isTRUE(capabilities("cairo"))) "cairo",
+                    if (isTRUE(capabilities("aqua"))) "quartz"))
+  for (type in types) {
+    before <- grDevices::dev.cur()
+    ok <- tryCatch({
+      grDevices::png(file, width = width, height = height, units = "in", res = res, type = type)
+      TRUE
+    }, warning = function(w) FALSE, error = function(e) FALSE)
+    if (ok) return(invisible(type))
+    if (grDevices::dev.cur() != before) grDevices::dev.off()
+  }
+  stop("No PNG graphics device is available to draw the charts.", call. = FALSE)
+}
+
 plot_uri <- function(width, height, code) {
   f <- tempfile(fileext = ".png")
   on.exit(unlink(f))
-  type <- if (isTRUE(capabilities("cairo"))) "cairo" else getOption("bitmapType")
-  grDevices::png(f, width = width, height = height, units = "in", res = 150, type = type)
-  ok <- tryCatch({ force(code); TRUE }, finally = grDevices::dev.off())
+  open_png(f, width, height)
+  tryCatch(force(code), finally = grDevices::dev.off())
+  if (!file.exists(f) || file.size(f) == 0) stop("The chart could not be drawn.", call. = FALSE)
   data_uri(f)
 }
 
