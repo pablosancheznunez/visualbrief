@@ -1,0 +1,12 @@
+bibentry(
+  bibtype = "Manual",
+  title = "{visualbrief}: Turn Campaign Data into Clear, Reusable Visual Reports",
+  author = person("Pablo", "Sánchez-Núñez", comment = c(ORCID = "0000-0001-7845-9506")),
+  year = "2026",
+  note = paste("R package version", meta$Version),
+  url = "https://pablosancheznunez.com/visualbrief/",
+  textVersion = paste0(
+    "Sánchez-Núñez, P. (2026). visualbrief: Turn Campaign Data into Clear, ",
+    "Reusable Visual Reports. R package version ", meta$Version, "."
+  )
+)

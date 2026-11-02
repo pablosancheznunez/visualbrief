@@ -1,0 +1,123 @@
+---
+title: "From campaign data to a clear report"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{From campaign data to a clear report}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 7, dpi = 96)
+```
+
+visualbrief covers the whole path from a campaign export to a report you can
+send: standardise the data, summarise it, compare content across audiences
+with honest uncertainty, follow it over time, and present it with an
+accessible visual identity.
+
+```{r}
+library(visualbrief)
+```
+
+## 1. Standardise the data
+
+Every platform names its columns differently. `vb_campaign()` maps them to
+eleven standard fields; only `impressions` is required.
+
+```{r}
+raw <- data.frame(
+  Day = c("2026-03-02", "2026-03-02", "2026-03-03", "2026-03-03"),
+  `Ad name` = c("Video", "Carousel", "Video", "Carousel"),
+  Impressions = c(1200, 950, 1300, 1010),
+  `Link clicks` = c(36, 19, 41, 22),
+  check.names = FALSE
+)
+vb_campaign(raw, date = "Day", content = "Ad name",
+            impressions = "Impressions", clicks = "Link clicks")
+```
+
+`vb_read_csv()` does the same from a file, including the semicolon-separated
+files with decimal commas that spreadsheets produce in many European
+locales.
+
+The rest of this guide uses `campaign_demo`, a **synthetic** campaign with
+known effects: four pieces of content, three audiences, three channels and
+twelve weeks.
+
+```{r}
+campaign_demo
+```
+
+## 2. Summarise
+
+```{r}
+s <- vb_summarise(campaign_demo, by = "channel")
+s[, c("channel", "impressions", "clicks", "ctr", "ctr_low", "ctr_high", "cpa")]
+```
+
+Rates come with Wilson 95% intervals, which behave well for the small
+proportions typical of click-through and conversion. Summed reach is an upper
+bound: the same person may be reached on several days or channels.
+
+## 3. Which content works with each audience?
+
+```{r, fig.height = 6.5}
+vb_plot_rates(campaign_demo, metric = "ctr", by = "content", within = "audience")
+```
+
+`vb_compare()` puts numbers on what the chart shows. Within each audience,
+every piece is compared with the most delivered one, with the difference, its
+interval (Newcombe's hybrid score method) and a test adjusted for the number
+of comparisons (Holm).
+
+```{r}
+cmp <- vb_compare(campaign_demo, metric = "ctr", by = "content", within = "audience")
+cmp[cmp$audience == "Researchers",
+    c("content", "rate", "diff", "diff_low", "diff_high", "p_adjusted", "small_sample")]
+```
+
+The analysis recovers the effects built into the data: the infographic works
+best with researchers, the testimonial with professionals and the video with
+students.
+
+**What this does and does not show.** Unless the campaign was a randomised
+test, these are descriptions of what happened, not proof that one piece
+causes better results: platforms decide who sees what, timing changes, and
+audiences overlap. visualbrief reports intervals and flags small samples so
+that readers do not over-interpret noise.
+
+## 4. Over time
+
+```{r, fig.height = 3.4}
+vb_plot_trend(campaign_demo, metric = "ctr", by = "channel")
+```
+
+The decline in every channel is the creative fatigue simulated in the data.
+
+## 5. An accessible visual identity
+
+```{r}
+brand <- vb_brand("Acme research", primary = "#1F4E5F",
+                  palette = c("#1F4E5F", "#B35900", "#007A5E", "#E69F00"))
+vb_check_contrast(brand)
+```
+
+The light orange fails the 3:1 contrast that WCAG 2.2 requires for chart
+elements: replace it before using the palette. If your organisation keeps a
+`_brand.yml` file for Quarto or Shiny, `vb_brand_yml()` reads it, so one
+identity serves charts, reports and websites.
+
+## 6. The report
+
+```{r, eval = FALSE}
+vb_report(campaign_demo, "campaign-report.html",
+          title = "Spring awareness campaign", brand = vb_brand("Acme research"),
+          currency = "EUR")
+```
+
+The result is a single HTML file, with no external resources, that you can
+email or archive. It contains the headline figures, results by channel, the
+comparison with intervals, the trend, the colour accessibility check and a
+plain-language note on method. For a report with your own text and sections,
+`vb_quarto_template()` copies an editable Quarto document.

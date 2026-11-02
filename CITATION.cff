@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use visualbrief, please cite it as below."
+type: software
+title: "visualbrief: Turn Campaign Data into Clear, Reusable Visual Reports"
+version: 0.1.0
+date-released: 2026-11-02
+authors:
+  - family-names: "Sánchez-Núñez"
+    given-names: "Pablo"
+    orcid: "https://orcid.org/0000-0001-7845-9506"
+url: "https://pablosancheznunez.com/visualbrief/"
+repository-code: "https://github.com/pablosancheznunez/visualbrief"
+license: MIT
+keywords:
+  - digital marketing
+  - campaign analytics
+  - data visualisation
+  - reporting
+  - accessibility
+  - R
+abstract: >-
+  An R package that standardises digital campaign data and turns it into
+  summaries, comparisons of content across audiences with confidence
+  intervals, branded and accessible charts, and a self-contained HTML report.

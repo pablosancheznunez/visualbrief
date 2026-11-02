@@ -1,0 +1,41 @@
+Package: visualbrief
+Title: Turn Campaign Data into Clear, Reusable Visual Reports
+Version: 0.1.0
+Authors@R:
+    person("Pablo", "Sánchez-Núñez", email = "psancheznunez@outlook.com",
+           role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0001-7845-9506"))
+Description: Standardises the results of digital marketing and communication
+    campaigns exported from advertising platforms, social media tools, web
+    analytics or spreadsheets, and turns them into summaries, comparisons of
+    content across audiences with confidence intervals, branded charts and a
+    self-contained HTML report. Rates use Wilson score intervals and
+    differences use Newcombe's hybrid score intervals (Newcombe, 1998,
+    <doi:10.1002/(SICI)1097-0258(19980430)17:8%3C873::AID-SIM779%3E3.0.CO;2-I>).
+    Brand colours can be read from a 'brand.yml' file and checked against the
+    contrast requirements of the Web Content Accessibility Guidelines.
+    Results are presented as descriptions of what happened in a campaign, not
+    as causal claims about what makes content work.
+License: MIT + file LICENSE
+URL: https://pablosancheznunez.com/visualbrief/,
+    https://github.com/pablosancheznunez/visualbrief
+BugReports: https://github.com/pablosancheznunez/visualbrief/issues
+Depends:
+    R (>= 4.1.0)
+Imports:
+    grDevices,
+    graphics,
+    stats,
+    tools,
+    utils
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    yaml
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-GB
+LazyData: true
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.1.1

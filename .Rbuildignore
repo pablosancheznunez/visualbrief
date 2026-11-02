@@ -1,0 +1,13 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.github$
+^data-raw$
+^cran-comments\.md$
+^CONTRIBUTING\.md$
+^CITATION\.cff$
+^_pkgdown\.yml$
+^pkgdown$
+^docs$
+^doc$
+^Meta$
+^man/figures/card\.png$

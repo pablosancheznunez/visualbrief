@@ -1,0 +1,63 @@
+---
+title: "Campaign report"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  echo: false
+  warning: false
+---
+
+```{r}
+#| include: false
+library(visualbrief)
+
+# Replace with your data, for example:
+# campaign <- vb_read_csv("campaign.csv", date = "Day", content = "Ad name",
+#                         impressions = "Impressions", clicks = "Link clicks")
+campaign <- campaign_demo
+
+# Your visual identity, or vb_brand_yml("_brand.yml")
+brand <- vb_brand("Your organisation")
+```
+
+## Summary
+
+```{r}
+knitr::kable(summary(campaign)[, c("impressions", "clicks", "ctr", "engagement_rate", "conversion_rate")],
+             digits = 4)
+```
+
+Write here the two or three findings that matter for the decision at hand.
+
+## Results by channel
+
+```{r}
+knitr::kable(vb_summarise(campaign, by = "channel")[, c("channel", "impressions", "ctr", "engagement_rate", "cpa")],
+             digits = 4)
+```
+
+## Which content works with each audience
+
+```{r}
+#| fig-height: 7
+vb_plot_rates(campaign, metric = "ctr", by = "content", within = "audience", brand = brand)
+```
+
+```{r}
+cmp <- vb_compare(campaign, metric = "ctr", by = "content", within = "audience")
+knitr::kable(cmp[, c("audience", "content", "rate", "diff", "diff_low", "diff_high", "p_adjusted")], digits = 4)
+```
+
+## Over time
+
+```{r}
+vb_plot_trend(campaign, metric = "ctr", by = "channel", brand = brand)
+```
+
+## Notes
+
+Campaign data are observational unless they come from a randomised test.
+Differences describe this campaign; they do not prove that one piece causes
+better results.

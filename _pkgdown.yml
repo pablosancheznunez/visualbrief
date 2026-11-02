@@ -1,0 +1,55 @@
+url: https://pablosancheznunez.com/visualbrief/
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#6a2c4f"
+  opengraph:
+    image:
+      src: man/figures/card.png
+      alt: "visualbrief: turn campaign data into clear, reusable visual reports"
+
+authors:
+  Pablo Sánchez-Núñez:
+    href: https://pablosancheznunez.com
+
+home:
+  links:
+  - text: Example report
+    href: https://pablosancheznunez.com/visualbrief/example/report.html
+  - text: Author website
+    href: https://pablosancheznunez.com
+
+navbar:
+  structure:
+    left: [intro, reference, news]
+    right: [search, github]
+
+reference:
+- title: Prepare the data
+  desc: Standardise exports from any platform.
+  contents:
+  - vb_campaign
+  - vb_read_csv
+- title: Analyse
+  desc: Totals, rates with intervals, comparisons and trends.
+  contents:
+  - vb_summarise
+  - vb_compare
+  - vb_trend
+- title: Visual identity and accessibility
+  contents:
+  - vb_brand
+  - vb_brand_yml
+  - vb_check_contrast
+  - vb_contrast
+- title: Communicate
+  desc: Branded charts and a self-contained report.
+  contents:
+  - vb_plot_rates
+  - vb_plot_trend
+  - vb_report
+  - vb_quarto_template
+- title: Example data
+  contents:
+  - campaign_demo

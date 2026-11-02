@@ -1,0 +1,6 @@
+# Paths whose changes need the maintainer's review.
+/R/metrics.R @pablosancheznunez
+/R/compare.R @pablosancheznunez
+/data-raw/ @pablosancheznunez
+/data/ @pablosancheznunez
+/.github/ @pablosancheznunez
